@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using WebApi.Data;
 using WebApi.Dtos;
@@ -18,13 +19,13 @@ namespace WebApi.Controllers
     {
         private readonly ICommandRepo _repository;
         private readonly IMapper _mapper;
-        public CommandsController(ICommandRepo repo,IMapper mapper)
+        public CommandsController(ICommandRepo repo, IMapper mapper)
         {
             _repository = repo;
             _mapper = mapper;
         }
 
-      //  private readonly MockCommandRepo _repository = new MockCommandRepo();
+        //  private readonly MockCommandRepo _repository = new MockCommandRepo();
         // GET: api/<CommandsController>
         [HttpGet]
         public ActionResult<IEnumerable<CommandReadDto>> GetAllCommand()
@@ -35,20 +36,20 @@ namespace WebApi.Controllers
         }
 
         // GET api/Commands/5
-        [HttpGet("{id}",Name = "GetById")]
-        public ActionResult <CommandReadDto> GetById(int id)
+        [HttpGet("{id}", Name = "GetById")]
+        public ActionResult<CommandReadDto> GetById(int id)
         {
             var commnad = _repository.GetCommandById(id);
 
-            
-            if(commnad != null)
+
+            if (commnad != null)
             {  //mapping Command to CommandReadDto Using AutoMapper
                 //its mapping commandreadDto to From command
                 return Ok(_mapper.Map<CommandReadDto>(commnad));
             }
 
             return NotFound();
-            
+
         }
 
         //Return CommandReadDto  
@@ -65,15 +66,39 @@ namespace WebApi.Controllers
             var commandReadDto = _mapper.Map<CommandReadDto>(commnad);
 
             //getting a single resource location -getbyId and creatng anonymous object ->new{id=commandReadDto.Id} and passing dto object
-           return CreatedAtRoute(nameof(GetById), new { id = commandReadDto.Id }, commandReadDto);
+            return CreatedAtRoute(nameof(GetById), new { id = commandReadDto.Id }, commandReadDto);
 
-          //  return Ok(commandReadDto);
+            //  return Ok(commandReadDto);
         }
 
         // PUT api/<CommandsController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
+        }
+
+        // PATCH api/commands/{id}
+        [HttpPatch("{id})"]
+        public ActionResult PartialCommandUpdate(int id, JsonPatchDocument<CommandUpdateDto> patchDocument)
+        {
+            var command = _repository.GetCommandById(id);
+            if (command == null)
+            {
+                return NotFound();
+            }
+            var commandDto = _mapper.Map<CommandUpdateDto>(command);
+            patchDocument.ApplyTo(commandDto, ModelState);
+
+            if (!TryValidateModel(commandDto))
+            {
+                return ValidationProblem(ModelState);
+            }
+
+            _mapper.Map(commandDto, command);
+            _repository.UpdateCommand(command);
+            _repository.SaveChanges();
+            return NotFound();
+
         }
 
         // DELETE api/<CommandsController>/5

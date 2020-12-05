@@ -12,6 +12,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Serialization;
 using WebApi.Data;
 
 namespace WebApi
@@ -31,7 +32,10 @@ namespace WebApi
             services.AddDbContext<CommandContext>(options =>
             options.UseSqlServer(
                 Configuration.GetConnectionString("DefaultConnection")));
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(s => {
+                s.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            }); 
+
             //services.AddScoped<ICommandRepo, MockCommandRepo>();
 
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

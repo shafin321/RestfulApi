@@ -15,6 +15,7 @@ namespace WebApi.Profiles
             //Source->targer Mapper -->Command to CommandReadDto
             CreateMap<Command, CommandReadDto>();
             CreateMap<CreateCommandDto, Command>();
+            CreateMap<Command, CommandUpdateDto>();
         }
 
     }

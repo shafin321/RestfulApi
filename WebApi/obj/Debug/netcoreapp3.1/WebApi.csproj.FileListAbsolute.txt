@@ -61,5 +61,4 @@ C:\Users\Shujaul\source\repos\web rest api\WebApi\WebApi\bin\Debug\netcoreapp3.1
 C:\Users\Shujaul\source\repos\web rest api\WebApi\WebApi\bin\Debug\netcoreapp3.1\runtimes\win\lib\netstandard2.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\Shujaul\source\repos\web rest api\WebApi\WebApi\bin\Debug\netcoreapp3.1\AutoMapper.dll
 C:\Users\Shujaul\source\repos\web rest api\WebApi\WebApi\bin\Debug\netcoreapp3.1\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
-C:\Users\Shujaul\source\repos\web rest api\WebApi\WebApi\obj\Debug\netcoreapp3.1\WebApi.csproj.CoreCompileInputs.cache
-C:\Users\Shujaul\source\repos\web rest api\WebApi\WebApi\obj\Debug\netcoreapp3.1\WebApi.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\Shujaul\source\repos\web rest api\WebApi\WebApi\bin\Debug\netcoreapp3.1\Microsoft.AspNetCore.JsonPatch.dll
